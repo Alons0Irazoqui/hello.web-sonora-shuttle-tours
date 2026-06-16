@@ -1,0 +1,918 @@
+/* ============================================================
+   SONORA SHUTTLE & TOURS — Enterprise Premium CSS
+   Senior UI/UX · Motion Design · Big Tech Level
+   ============================================================ */
+
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ── CSS Custom Properties / Design Tokens ── */
+:root {
+  --c-brand:       #F05A42;
+  --c-brand-dark:  #D94933;
+  --c-brand-glow:  rgba(240, 90, 66, 0.35);
+  --c-brand-glow2: rgba(240, 90, 66, 0.15);
+  --c-accent:      #F5A623;
+  --c-dark-900:    #0A0A0A;
+  --c-dark-800:    #111111;
+  --c-dark-700:    #1A1A1A;
+  --c-dark-600:    #222222;
+  --c-white:       #FFFFFF;
+  --c-gray-100:    #F5F5F5;
+  --c-gray-200:    #E5E5E5;
+  --c-gray-400:    #9CA3AF;
+  --c-gray-600:    #4B5563;
+
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth:   cubic-bezier(0.4, 0, 0.2, 1);
+
+  --radius-xl:  24px;
+  --radius-2xl: 32px;
+  --radius-3xl: 48px;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--c-dark-900);
+  color: var(--c-white);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--c-dark-900); }
+::-webkit-scrollbar-thumb { background: var(--c-dark-700); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--c-brand); }
+
+::selection { background: var(--c-brand); color: #fff; }
+
+/* ============================================================
+   PAGE LOADER — Premium Spinner
+   ============================================================ */
+
+#page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--c-dark-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 32px;
+  transition: opacity 0.6s var(--ease-smooth), visibility 0.6s var(--ease-smooth);
+}
+
+#page-loader.loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Brand mark in loader */
+.loader-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: loaderBrandIn 0.5s var(--ease-out-expo) 0.2s forwards;
+}
+
+.loader-brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--c-brand), var(--c-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: 0 0 28px var(--c-brand-glow);
+}
+
+.loader-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+.loader-brand-text strong {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1;
+}
+.loader-brand-text span {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--c-gray-400);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Spinner ring */
+.loader-spinner-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  opacity: 0;
+  animation: loaderBrandIn 0.5s var(--ease-out-expo) 0.4s forwards;
+}
+
+.loader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.loader-ring--outer {
+  border-top-color: var(--c-brand);
+  border-right-color: var(--c-brand);
+  animation: spinnerOuter 1.2s linear infinite;
+  box-shadow: 0 0 20px var(--c-brand-glow);
+}
+
+.loader-ring--inner {
+  inset: 10px;
+  border-bottom-color: var(--c-accent);
+  border-left-color: var(--c-accent);
+  animation: spinnerInner 0.9s linear infinite reverse;
+}
+
+.loader-ring--center {
+  inset: 24px;
+  background: var(--c-brand);
+  border: none;
+  border-radius: 50%;
+  animation: loaderPulse 1.2s ease-in-out infinite;
+}
+
+/* Progress line */
+.loader-progress {
+  width: 200px;
+  height: 2px;
+  background: var(--c-dark-700);
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0;
+  animation: loaderBrandIn 0.5s var(--ease-out-expo) 0.5s forwards;
+}
+
+.loader-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--c-brand), var(--c-accent));
+  border-radius: 2px;
+  animation: progressLoad 1.8s var(--ease-smooth) 0.6s forwards;
+  box-shadow: 0 0 10px var(--c-brand-glow);
+}
+
+@keyframes spinnerOuter {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinnerInner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes loaderPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(0.6); opacity: 0.5; }
+}
+
+@keyframes progressLoad {
+  0%   { width: 0%; }
+  40%  { width: 55%; }
+  80%  { width: 85%; }
+  100% { width: 100%; }
+}
+
+@keyframes loaderBrandIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   GLASSMORPHISM UTILITIES
+   ============================================================ */
+
+.glass-nav {
+  background: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.glass-card {
+  background: rgba(20, 20, 20, 0.65);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 32px 64px -16px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255,255,255,0.03) inset;
+}
+
+/* ============================================================
+   HERO SECTION — Initial Hidden States (before JS animates in)
+   ============================================================ */
+
+.hero-badge,
+.hero-title,
+.hero-text,
+.hero-ctas,
+.hero-trust,
+.hero-visual,
+.hero-particle-canvas {
+  opacity: 0;
+}
+
+.floating-card-1,
+.floating-card-2,
+.floating-card-3 {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* ============================================================
+   HERO SECTION — Entrance Animation Keyframes
+   ============================================================ */
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes heroSlideRight {
+  from { opacity: 0; transform: translateX(48px) scale(0.97); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* Staggered entrance classes applied by JS */
+.hero-badge.anim-in {
+  animation: heroFadeUp 0.7s var(--ease-out-expo) both;
+}
+.hero-title.anim-in {
+  animation: heroFadeUp 0.9s var(--ease-out-expo) 0.15s both;
+}
+.hero-text.anim-in {
+  animation: heroFadeUp 0.8s var(--ease-out-expo) 0.3s both;
+}
+.hero-ctas.anim-in {
+  animation: heroFadeUp 0.8s var(--ease-out-expo) 0.45s both;
+}
+.hero-trust.anim-in {
+  animation: heroFadeUp 0.7s var(--ease-out-expo) 0.60s both;
+}
+.hero-visual.anim-in {
+  animation: heroSlideRight 1s var(--ease-out-expo) 0.3s both;
+}
+.floating-card-1.anim-in {
+  animation: heroFadeUp 0.7s var(--ease-out-circ) 0.85s both;
+}
+.floating-card-2.anim-in {
+  animation: heroFadeUp 0.7s var(--ease-out-circ) 1.0s both;
+}
+.floating-card-3.anim-in {
+  animation: heroFadeUp 0.7s var(--ease-out-circ) 1.15s both;
+}
+
+/* ============================================================
+   CONTINUOUS FLOATING ANIMATIONS
+   ============================================================ */
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-14px) rotate(1deg); }
+}
+@keyframes floatDown {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(12px) rotate(-1deg); }
+}
+@keyframes floatSide {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50%       { transform: translateY(-8px) translateX(5px); }
+}
+
+.float-card-1 { animation: floatUp   4.2s var(--ease-smooth) infinite; }
+.float-card-2 { animation: floatDown 4.8s var(--ease-smooth) 0.6s infinite; }
+.float-card-3 { animation: floatSide 3.8s var(--ease-smooth) 0.3s infinite; }
+
+/* ============================================================
+   WORD CYCLING ANIMATION — Vertical Slide Slot
+   ============================================================ */
+
+/* Wrapper clips the sliding words to a single line height */
+.word-cycle-wrapper {
+  display: inline-block;
+  position: relative;
+  vertical-align: bottom;
+}
+
+/* The slot: overflow hidden, matches one word's height */
+.word-cycle-slot {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Height matches parent h1 line-height — set via JS */
+}
+
+/* Each word item stacks inside the slot */
+.word-item {
+  display: block;
+  color: var(--c-brand);
+  /* No extra styling here — transitions handled via JS classes */
+}
+
+/* Word entering from bottom */
+@keyframes wordSlideIn {
+  from {
+    transform: translateY(110%);
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+/* Word exiting to top */
+@keyframes wordSlideOut {
+  from {
+    transform: translateY(0%);
+    opacity: 1;
+    filter: blur(0px);
+  }
+  to {
+    transform: translateY(-110%);
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+.word-item.word-entering {
+  animation: wordSlideIn 0.55s var(--ease-out-expo) forwards;
+}
+
+.word-item.word-leaving {
+  animation: wordSlideOut 0.45s var(--ease-smooth) forwards;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* ============================================================
+   HERO BACKGROUND IMAGE LAYER
+   ============================================================ */
+
+.hero-bg-image {
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Subtle Ken Burns slow zoom on hero bg */
+.hero-bg-image img {
+  animation: kenBurns 20s ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+
+@keyframes kenBurns {
+  from { transform: scale(1.00); }
+  to   { transform: scale(1.06); }
+}
+
+/* ============================================================
+   GRADIENT ORBS — Animated Background
+   ============================================================ */
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(100px);
+  will-change: transform, opacity;
+}
+
+.hero-orb--primary {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(240,90,66,0.22) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: orbPrimary 8s var(--ease-smooth) infinite;
+}
+
+.hero-orb--secondary {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.12) 0%, transparent 70%);
+  top: -100px;
+  right: -80px;
+  animation: orbSecondary 10s var(--ease-smooth) 2s infinite;
+}
+
+.hero-orb--tertiary {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(245, 166, 35, 0.10) 0%, transparent 70%);
+  bottom: 50px;
+  left: -80px;
+  animation: orbTertiary 12s var(--ease-smooth) 4s infinite;
+}
+
+@keyframes orbPrimary {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  33%       { transform: translate(-52%, -48%) scale(1.08); opacity: 1; }
+  66%       { transform: translate(-48%, -52%) scale(0.95); opacity: 0.7; }
+}
+
+@keyframes orbSecondary {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+  50%       { transform: translateY(40px) scale(1.1); opacity: 0.9; }
+}
+
+@keyframes orbTertiary {
+  0%, 100% { transform: translateX(0) scale(1); opacity: 0.5; }
+  50%       { transform: translateX(30px) scale(1.15); opacity: 0.8; }
+}
+
+/* ============================================================
+   GRID / MESH BACKGROUND TEXTURE
+   ============================================================ */
+
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 40%, transparent 100%);
+}
+
+/* ============================================================
+   GRADIENT ANIMATED BORDER on Hero Image
+   ============================================================ */
+
+.hero-image-wrap {
+  position: relative;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+}
+
+.hero-image-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--radius-2xl) + 2px);
+  background: conic-gradient(
+    from 0deg,
+    var(--c-brand),
+    var(--c-accent),
+    transparent 40%,
+    transparent 60%,
+    var(--c-brand) 100%
+  );
+  animation: borderRotate 6s linear infinite;
+  z-index: 0;
+}
+
+.hero-image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: calc(var(--radius-2xl) - 2px);
+  background: var(--c-dark-700);
+  z-index: 1;
+}
+
+.hero-image-wrap > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes borderRotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   CTA BUTTON — Premium Glow & Hover Effects
+   ============================================================ */
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.35s var(--ease-spring),
+    box-shadow 0.35s var(--ease-smooth);
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-primary:hover { transform: translateY(-3px) scale(1.02); }
+.btn-primary:hover::after { opacity: 1; }
+.btn-primary:active { transform: translateY(0) scale(0.98); }
+
+.btn-primary:hover {
+  box-shadow:
+    0 0 0 1px rgba(240,90,66,0.5),
+    0 0 30px rgba(240,90,66,0.4),
+    0 20px 40px -10px rgba(240,90,66,0.3);
+}
+
+/* Shimmer sweep on btn */
+.btn-primary .btn-shimmer {
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  skewX: -20deg;
+  animation: btnShimmer 3s ease-in-out infinite 1.5s;
+}
+
+@keyframes btnShimmer {
+  0%   { left: -100%; }
+  50%, 100% { left: 200%; }
+}
+
+/* Secondary CTA */
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.3s var(--ease-spring),
+    background 0.3s,
+    border-color 0.3s;
+}
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.4) !important;
+  background: rgba(255,255,255,0.07) !important;
+}
+.btn-secondary:active { transform: translateY(0) scale(0.98); }
+
+/* ============================================================
+   FLOATING CARDS — Hover Depth Effect
+   ============================================================ */
+
+.floating-card-enhanced {
+  transition:
+    transform 0.4s var(--ease-spring),
+    box-shadow 0.4s var(--ease-smooth),
+    border-color 0.3s;
+}
+
+.floating-card-enhanced:hover {
+  transform: translateY(-6px) scale(1.04);
+  border-color: rgba(240,90,66,0.25);
+  box-shadow:
+    0 32px 64px -16px rgba(0,0,0,0.7),
+    0 0 20px rgba(240,90,66,0.1);
+}
+
+/* ============================================================
+   NAVBAR — Scroll Effects
+   ============================================================ */
+
+#navbar {
+  transition:
+    background 0.4s var(--ease-smooth),
+    box-shadow 0.4s var(--ease-smooth),
+    border-color 0.4s;
+}
+
+#navbar.scrolled {
+  background: rgba(8, 8, 8, 0.92) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.05), 0 12px 32px -8px rgba(0,0,0,0.6);
+}
+
+/* Nav links */
+.nav-link {
+  position: relative;
+  transition: color 0.25s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--c-brand);
+  transition: width 0.3s var(--ease-out-expo);
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link:hover { color: #fff !important; }
+
+/* ============================================================
+   SCROLL-REVEAL ANIMATIONS
+   ============================================================ */
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(48px);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-48px);
+  transition: opacity 0.85s var(--ease-out-expo), transform 0.85s var(--ease-out-expo);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(48px);
+  transition: opacity 0.85s var(--ease-out-expo), transform 0.85s var(--ease-out-expo);
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-smooth);
+}
+
+.is-revealed {
+  opacity: 1 !important;
+  transform: translate(0) !important;
+}
+
+/* Stagger delays for grouped reveals */
+.reveal-up:nth-child(1) { transition-delay: 0ms; }
+.reveal-up:nth-child(2) { transition-delay: 80ms; }
+.reveal-up:nth-child(3) { transition-delay: 160ms; }
+.reveal-up:nth-child(4) { transition-delay: 240ms; }
+
+/* ============================================================
+   SERVICE CARDS — Enterprise Hover
+   ============================================================ */
+
+.service-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.4s var(--ease-spring),
+    border-color 0.35s,
+    box-shadow 0.35s;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(240,90,66,0.08), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(240,90,66,0.4) !important;
+  box-shadow: 0 32px 64px -16px rgba(0,0,0,0.5), 0 0 0 1px rgba(240,90,66,0.1);
+}
+
+.service-card:hover::before { opacity: 1; }
+
+/* ============================================================
+   STAT BADGE NUMBERS — Counter Animation Ready
+   ============================================================ */
+
+.stat-counter {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   BADGE PULSE — Brand Color
+   ============================================================ */
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--c-brand-glow); }
+  50%       { box-shadow: 0 0 0 8px transparent; }
+}
+
+.badge-live-dot {
+  animation: badgePulse 2s ease-in-out infinite;
+  background: var(--c-brand);
+}
+
+/* ============================================================
+   HERO VISUAL — 3D Tilt Container
+   ============================================================ */
+
+.hero-visual {
+  perspective: 1200px;
+}
+
+.hero-visual-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.08s linear;
+  will-change: transform;
+}
+
+/* ============================================================
+   PARTICLE CANVAS
+   ============================================================ */
+
+#particle-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   ENTERPRISE SECTION SEPARATOR
+   ============================================================ */
+
+.section-line {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-brand), var(--c-accent));
+  border-radius: 3px;
+  margin-bottom: 16px;
+}
+
+/* ============================================================
+   LOGO MARK — Glow Pulse
+   ============================================================ */
+
+@keyframes logoPulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(240,90,66,0.45); }
+  50%       { box-shadow: 0 0 32px rgba(240,90,66,0.75); }
+}
+
+.logo-mark {
+  animation: logoPulse 3s ease-in-out infinite;
+}
+
+/* ============================================================
+   STEP NUMBERS — Glow on Active
+   ============================================================ */
+
+.step-active {
+  position: relative;
+}
+.step-active::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 24px;
+  background: var(--c-brand-glow2);
+  filter: blur(12px);
+  z-index: -1;
+}
+
+/* ============================================================
+   MAP IFRAME — Dark Theme
+   ============================================================ */
+
+.map-iframe {
+  filter: grayscale(90%) invert(92%) contrast(1.1) brightness(0.85);
+  transition: filter 0.4s;
+}
+.map-iframe:hover { filter: grayscale(60%) invert(90%) contrast(1.1); }
+
+/* ============================================================
+   WHATSAPP FAB — Enhanced
+   ============================================================ */
+
+@keyframes fabPing {
+  0%   { transform: scale(1); opacity: 0.4; }
+  80%  { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.fab-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: fabPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.fab-main {
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
+}
+.fab-main:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 16px 40px -8px rgba(34,197,94,0.6);
+}
+
+/* ============================================================
+   FORM INPUTS — Enterprise Focus States
+   ============================================================ */
+
+.form-input {
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--c-brand) !important;
+  box-shadow: 0 0 0 3px var(--c-brand-glow2);
+  background: rgba(255,255,255,0.02) !important;
+}
+
+/* ============================================================
+   CTA SECTION — Animated Gradient Background
+   ============================================================ */
+
+.cta-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--c-brand-dark) 0%, var(--c-brand) 50%, var(--c-accent) 100%);
+  background-size: 200% 200%;
+  animation: ctaGradientShift 6s ease-in-out infinite;
+}
+
+@keyframes ctaGradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.social-btn {
+  transition: transform 0.3s var(--ease-spring), background 0.3s, box-shadow 0.3s;
+}
+.social-btn:hover { transform: translateY(-3px) scale(1.12); }
+
+/* ============================================================
+   RESPONSIVE UTILITIES
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .hero-orb--primary { width: 340px; height: 340px; }
+  .hero-orb--secondary { display: none; }
+  .hero-image-wrap::before { display: none; }
+  .hero-image-wrap::after { display: none; }
+}
+
+/* ============================================================
+   MICRO INTERACTION — Link Underline Slide
+   ============================================================ */
+
+.link-slide {
+  position: relative;
+  display: inline-block;
+}
+.link-slide::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s var(--ease-out-expo);
+}
+.link-slide:hover::after { width: 100%; }
+
+/* ============================================================
+   TRUST AVATARS — Hover Expand
+   ============================================================ */
+
+.trust-avatar {
+  transition: transform 0.25s var(--ease-spring), z-index 0s;
+}
+.trust-avatar:hover { transform: scale(1.25) translateY(-4px); z-index: 10; }
